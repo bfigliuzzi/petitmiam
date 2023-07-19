@@ -1,0 +1,45 @@
+<p>
+  Ce formulaire utilise la
+  <a
+    href="https://etre-parent.ooreka.fr/astuce/voir/595103/regle-d-appert"
+    target="_blank"
+    >règle d'Appert</a
+  >.
+</p>
+<p>
+  La règle se résume selon la formule suivante :
+  <br />
+  <code>
+    Ration de lait journalière (ml/jour) = poids de l'enfant (en gramme) / 10 +
+    250
+  </code>
+</p>
+
+<p>Laissez-vous guider par le formulaire ci-dessous !</p>
+
+<section class="content">
+  <form [formGroup]="formGroup">
+    <mat-form-field>
+      <mat-label>Poids (en gramme)</mat-label>
+      <input matInput formControlName="weight" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Nombre de biberon / jour</mat-label>
+      <input matInput formControlName="bottleNbr" />
+    </mat-form-field>
+  </form>
+
+  <mat-card *ngIf="totalMilk$ | async as totalMilk">
+    <mat-card-header>Résultats</mat-card-header>
+    <mat-card-content>
+      <p>
+        Volume à donner par 24h : <mark>{{ totalMilk }}</mark> ml.
+      </p>
+      <p *ngIf="totalByBottle$ | async as totalByBottle">
+        Soit un total de
+        <mark>{{ formGroup.controls.bottleNbr.value }}</mark> biberons de
+        <mark>{{ totalByBottle }}</mark> ml.
+      </p>
+    </mat-card-content>
+  </mat-card>
+</section>
