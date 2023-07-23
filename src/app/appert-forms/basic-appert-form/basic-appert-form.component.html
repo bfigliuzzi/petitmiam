@@ -1,34 +1,39 @@
 <p>
-  Ce formulaire utilise la
-  <a
-    href="https://etre-parent.ooreka.fr/astuce/voir/595103/regle-d-appert"
-    target="_blank"
-    >règle d'Appert</a
-  >.
-</p>
-<p>
-  La règle se résume selon la formule suivante :
-  <br />
-  <code>
-    Ration de lait journalière (ml/jour) = poids de l'enfant (en gramme) / 10 +
-    250
-  </code>
-</p>
-
-<p>
-  <small>
-    En moyenne, un bébé prend 6 à 8 biberons par jour le premier mois, 6 à 7
-    biberons par jour le deuxième mois, 5 biberons le 3ème mois et 4 biberons le
-    4ème et 5ème mois.
-  </small>
-</p>
-
-<p>
   Afin d'obtenir une indication personnalisée, laissez-vous guider par le
   formulaire ci-dessous !
 </p>
 
 <article class="content">
+  <details>
+    <summary>Ce formulaire utilise la règle d'Appert</summary>
+    <p>
+      La règle se résume selon la formule suivante :
+      <br />
+      <code>
+        Ration de lait journalière (ml/jour) = poids de l'enfant (en gramme) /
+        10 + 250
+      </code>
+    </p>
+
+    <p>
+      <small>
+        En moyenne, un bébé prend 6 à 8 biberons par jour le premier mois, 6 à 7
+        biberons par jour le deuxième mois, 5 biberons le 3ème mois et 4
+        biberons le 4ème et 5ème mois.
+      </small>
+    </p>
+    <p>
+      <small>
+        Plus d'information sur la règle d'Appert
+        <a
+          href="https://etre-parent.ooreka.fr/astuce/voir/595103/regle-d-appert"
+          target="_blank"
+          >ici</a
+        >.
+      </small>
+    </p>
+  </details>
+
   <form [formGroup]="formGroup">
     <label for="weightIpt">Poids (en gramme)</label>
     <input id="weightIpt" formControlName="weight" required min="0" />
@@ -39,10 +44,6 @@
 
   <div>
     <h2>Résultats</h2>
-    <ng-template #noData>
-      <p>Remplissez le formulaire pour voir apparaitre vos résultats !</p>
-    </ng-template>
-
     <p *ngIf="totalMilk$ | async as totalMilk; else noData">
       Volume à donner par 24h : <mark>{{ totalMilk }}</mark> ml.
     </p>
@@ -51,5 +52,9 @@
       <mark>{{ formGroup.controls.bottleNbr.value }}</mark> biberons de
       <mark>{{ totalByBottle }}</mark> ml.
     </p>
+
+    <ng-template #noData>
+      <p>Remplissez le formulaire pour voir apparaitre vos résultats !</p>
+    </ng-template>
   </div>
 </article>

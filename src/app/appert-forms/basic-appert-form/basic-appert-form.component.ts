@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, combineLatest, map, takeUntil } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { Subject, combineLatest, map, takeUntil } from 'rxjs';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
 })
-export class BasicAppertFormComponent implements OnInit, OnDestroy {
+export class BasicAppertFormComponent implements OnDestroy {
   private readonly _destroy$ = new Subject<void>();
 
   private readonly _fb = inject(FormBuilder);
@@ -48,8 +48,6 @@ export class BasicAppertFormComponent implements OnInit, OnDestroy {
       return 0;
     }),
   );
-
-  ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this._destroy$.next();
