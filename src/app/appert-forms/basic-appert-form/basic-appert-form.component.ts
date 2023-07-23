@@ -1,33 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { Subject, combineLatest, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-basic-appert-form',
   templateUrl: './basic-appert-form.component.html',
-  styleUrls: ['./basic-appert-form.component.css'],
+  styleUrls: ['./basic-appert-form.component.scss'],
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCardModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class BasicAppertFormComponent implements OnInit, OnDestroy {
   private readonly _destroy$ = new Subject<void>();
 
-  formGroup = this.fb.group({
-    weight: this.fb.control<number | null>(null, {
+  private readonly _fb = inject(FormBuilder);
+
+  formGroup = this._fb.group({
+    weight: this._fb.control<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
       updateOn: 'change',
     }),
-    bottleNbr: this.fb.control<number | null>(null, {
+    bottleNbr: this._fb.control<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
       updateOn: 'change',
     }),
@@ -40,7 +33,7 @@ export class BasicAppertFormComponent implements OnInit, OnDestroy {
         return parseInt((weight / 10 + 250).toFixed(0));
       }
       return 0;
-    })
+    }),
   );
 
   totalByBottle$ = combineLatest([
@@ -53,10 +46,8 @@ export class BasicAppertFormComponent implements OnInit, OnDestroy {
         return parseInt((totalMilk / bottleNbr).toFixed(0));
       }
       return 0;
-    })
+    }),
   );
-
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {}
 

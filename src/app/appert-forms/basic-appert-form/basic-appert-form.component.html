@@ -15,31 +15,41 @@
   </code>
 </p>
 
-<p>Laissez-vous guider par le formulaire ci-dessous !</p>
+<p>
+  <small>
+    En moyenne, un bébé prend 6 à 8 biberons par jour le premier mois, 6 à 7
+    biberons par jour le deuxième mois, 5 biberons le 3ème mois et 4 biberons le
+    4ème et 5ème mois.
+  </small>
+</p>
 
-<section class="content">
+<p>
+  Afin d'obtenir une indication personnalisée, laissez-vous guider par le
+  formulaire ci-dessous !
+</p>
+
+<article class="content">
   <form [formGroup]="formGroup">
-    <mat-form-field>
-      <mat-label>Poids (en gramme)</mat-label>
-      <input matInput formControlName="weight" />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Nombre de biberon / jour</mat-label>
-      <input matInput formControlName="bottleNbr" />
-    </mat-form-field>
+    <label for="weightIpt">Poids (en gramme)</label>
+    <input id="weightIpt" formControlName="weight" required min="0" />
+
+    <label for="bottleNbrIpt">Nombre de biberon / jour</label>
+    <input id="bottleNbrIpt" formControlName="bottleNbr" required min="1" />
   </form>
 
-  <mat-card *ngIf="totalMilk$ | async as totalMilk">
-    <mat-card-header>Résultats</mat-card-header>
-    <mat-card-content>
-      <p>
-        Volume à donner par 24h : <mark>{{ totalMilk }}</mark> ml.
-      </p>
-      <p *ngIf="totalByBottle$ | async as totalByBottle">
-        Soit un total de
-        <mark>{{ formGroup.controls.bottleNbr.value }}</mark> biberons de
-        <mark>{{ totalByBottle }}</mark> ml.
-      </p>
-    </mat-card-content>
-  </mat-card>
-</section>
+  <div>
+    <h2>Résultats</h2>
+    <ng-template #noData>
+      <p>Remplissez le formulaire pour voir apparaitre vos résultats !</p>
+    </ng-template>
+
+    <p *ngIf="totalMilk$ | async as totalMilk; else noData">
+      Volume à donner par 24h : <mark>{{ totalMilk }}</mark> ml.
+    </p>
+    <p *ngIf="totalByBottle$ | async as totalByBottle">
+      Soit un total de
+      <mark>{{ formGroup.controls.bottleNbr.value }}</mark> biberons de
+      <mark>{{ totalByBottle }}</mark> ml.
+    </p>
+  </div>
+</article>
