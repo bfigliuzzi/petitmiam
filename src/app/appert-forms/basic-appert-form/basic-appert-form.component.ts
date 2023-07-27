@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Subject, combineLatest, map, takeUntil } from 'rxjs';
+import { BasicAppertFormResultComponent } from './basic-appert-form-result/basic-appert-form-result.component';
 
 @Component({
   selector: 'app-basic-appert-form',
   templateUrl: './basic-appert-form.component.html',
   styleUrls: ['./basic-appert-form.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, BasicAppertFormResultComponent],
 })
 export class BasicAppertFormComponent implements OnDestroy {
   private readonly _destroy$ = new Subject<void>();
@@ -48,6 +49,24 @@ export class BasicAppertFormComponent implements OnDestroy {
       return 0;
     }),
   );
+
+  roundedTotalMilk$ = this.totalMilk$.pipe(
+    takeUntil(this._destroy$),
+    map(this.roundTotal),
+  );
+
+  roundedTotalByBottle$ = this.totalByBottle$.pipe(
+    takeUntil(this._destroy$),
+    map(this.roundTotal),
+  );
+
+  private roundTotal(total: number): number {
+    let value = total;
+    while (value % 30 !== 0) {
+      value++;
+    }
+    return value;
+  }
 
   ngOnDestroy(): void {
     this._destroy$.next();

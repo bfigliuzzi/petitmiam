@@ -34,27 +34,38 @@
     </p>
   </details>
 
-  <form [formGroup]="formGroup">
-    <label for="weightIpt">Poids (en gramme)</label>
-    <input id="weightIpt" formControlName="weight" required min="0" />
-
-    <label for="bottleNbrIpt">Nombre de biberon / jour</label>
-    <input id="bottleNbrIpt" formControlName="bottleNbr" required min="1" />
+  <form [formGroup]="formGroup" class="grid">
+    <div>
+      <label for="weightIpt">Poids (en gramme)</label>
+      <input id="weightIpt" formControlName="weight" required min="0" />
+    </div>
+    <div>
+      <label for="bottleNbrIpt">Nombre de biberon / jour</label>
+      <input id="bottleNbrIpt" formControlName="bottleNbr" required min="1" />
+    </div>
   </form>
-
-  <div>
-    <h2>Résultats</h2>
-    <p *ngIf="totalMilk$ | async as totalMilk; else noData">
-      Volume à donner par 24h : <mark>{{ totalMilk }}</mark> ml.
-    </p>
-    <p *ngIf="totalByBottle$ | async as totalByBottle">
-      Soit un total de
-      <mark>{{ formGroup.controls.bottleNbr.value }}</mark> biberons de
-      <mark>{{ totalByBottle }}</mark> ml.
-    </p>
-
-    <ng-template #noData>
-      <p>Remplissez le formulaire pour voir apparaitre vos résultats !</p>
-    </ng-template>
-  </div>
 </article>
+
+<section>
+  <div *ngIf="totalMilk$ | async as totalMilk; else noData" class="grid">
+    <app-basic-appert-form-result
+      resultType="théoriques"
+      [totalMilk$]="totalMilk$"
+      [totalByBottle$]="totalByBottle$"
+      [bottleNbr]="formGroup.controls.bottleNbr.value"
+      note="Résultats obtenus en applicant strictement la <a href='https://etre-parent.ooreka.fr/astuce/voir/595103/regle-d-appert' target='_blank'>règle d'Appert</a>."
+    ></app-basic-appert-form-result>
+
+    <app-basic-appert-form-result
+      resultType="pragmatiques"
+      [totalMilk$]="roundedTotalMilk$"
+      [totalByBottle$]="roundedTotalByBottle$"
+      [bottleNbr]="formGroup.controls.bottleNbr.value"
+      note="Résultats obtenus en tenant compte de la manière dont on prépare un biberon (30 ml d'eau pour 1 dose de lait en poudre)."
+    ></app-basic-appert-form-result>
+  </div>
+
+  <ng-template #noData>
+    <p>Remplissez le formulaire pour voir apparaitre vos résultats !</p>
+  </ng-template>
+</section>

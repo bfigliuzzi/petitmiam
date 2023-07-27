@@ -1,0 +1,15 @@
+<article>
+  <h2>Résultats {{ resultType }}</h2>
+  <p>
+    Volume à donner par 24h :
+    <mark>{{ totalMilk$ | async }}</mark> ml.
+  </p>
+  <p *ngIf="totalByBottle$ | async as totalByBottle">
+    Soit un total de
+    <mark>{{ bottleNbr }}</mark> biberons de
+    <mark>{{ totalByBottle }}</mark> ml.
+  </p>
+  <footer>
+    <p><small [innerHTML]="note"></small></p>
+  </footer>
+</article>
